@@ -1,16 +1,20 @@
 import React, { useState, useCallback } from 'react';
 import debounce from 'lodash.debounce';
-import './SearchBar.module.css';
+import { useDispatch } from 'react-redux';
+
+import styles from './SearchBar.module.css';
+import { fetchBooks } from '../../../src/redux/bookSlice';
+import { AppDispatch } from '../../../src/redux/store';
 
 const SearchBar: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = useCallback(
     debounce((searchTerm: string) => {
-      // TODO: Dispatch the search action using searchTerm
-      console.log('Searching for', searchTerm);
+      dispatch(fetchBooks({ query: searchTerm }));
     }, 300),
-    [],
+    [dispatch],
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +24,14 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles.searchBarContainer}>
       <input
         type="text"
         value={searchTerm}
         onChange={handleChange}
+        className={styles.searchInput}
         placeholder="Search for books..."
       />
-      <button onClick={() => handleSearch(searchTerm)}>Search</button>
     </div>
   );
 };

@@ -1,22 +1,29 @@
 import React from 'react';
-import './SortFilter.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './SortFilter.module.css';
+import { fetchBooks, setSelectedSort } from '../../../src/redux/bookSlice';
+import { AppDispatch, RootState } from '../../../src/redux/store';
 
-type SortFilterProps = {
-  options: string[];
-  selectedOption: string;
-  onOptionChange: (option: string) => void;
-};
+const SortFilter: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const currentQuery = useSelector((state: RootState) => state.books.query);
+  const selectedOption = useSelector(
+    (state: RootState) => state.books.selectedSort,
+  );
 
-const SortFilter: React.FC<SortFilterProps> = ({
-  options,
-  selectedOption,
-  onOptionChange,
-}) => {
+  const options = ['relevance', 'newest'];
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newOrderBy = e.target.value;
+    dispatch(setSelectedSort(newOrderBy));
+    dispatch(fetchBooks({ query: currentQuery, orderBy: newOrderBy }));
+  };
+
   return (
     <select
-      className="sort-filter"
+      className={styles.sortFilter}
       value={selectedOption}
-      onChange={(e) => onOptionChange(e.target.value)}
+      onChange={handleChange}
     >
       {options.map((option) => (
         <option key={option} value={option}>

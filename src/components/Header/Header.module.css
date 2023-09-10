@@ -1,0 +1,47 @@
+.appHeader {
+    background-color: #007acc;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.appTitle {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    gap: 10px;
+}
+
+.filters h3 {
+    font-size: 1.2em;
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .appHeader {
+        padding: 10px;
+    }
+
+    .appTitle {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

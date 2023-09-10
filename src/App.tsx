@@ -1,61 +1,72 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar/SearchBar';
-import CategoryFilter from './components/CategoryFilter/CategoryFilter';
-import SortFilter from './components/SortFilter/SortFilter';
+import Header from './components/Header/Header';
 import BookCard from './components/BookCard/BookCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBooks } from './redux/bookSlice';
+import { AppDispatch } from './redux/store';
+import { RootState } from './redux/store';
+import { Link, Route, Routes } from 'react-router-dom';
+import BookDetails from '../src/components/BookDetails/BookDetails';
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedSort, setSelectedSort] = useState('relevance');
+  const dispatch = useDispatch<AppDispatch>();
 
-  const categories = [
-    'all',
-    'art',
-    'biography',
-    'computers',
-    'history',
-    'medical',
-    'poetry',
-  ];
-  const sortOptions = ['relevance', 'newest'];
+  const books = useSelector((state: RootState) => state.books.books);
+  const loading = useSelector((state: RootState) => state.books.loading);
+  const error = useSelector((state: RootState) => state.books.error);
 
-  // Dummy data for demonstration purposes
-  const books = [
-    {
-      title: "Harry Potter and the Sorcerer's Stone",
-      image: 'path_to_image.jpg',
-      category: 'fiction',
-      authors: ['J.K. Rowling'],
-    },
-    // ... More books for demonstration
-  ];
+  const [query, setQuery] = useState('');
+  const [paginationCount, setPaginationCount] = useState(30);
+
+  useEffect(() => {
+    if (query) {
+      dispatch(fetchBooks({ query, startIndex: 0 }) as any);
+    }
+  }, [query, dispatch]);
+
+  const handleLoadMore = () => {
+    setPaginationCount(paginationCount + 30);
+    dispatch(fetchBooks({ query, startIndex: paginationCount }) as any);
+  };
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Search for books</h1>
-        <SearchBar />
-        <div className="filters">
-          <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
-          <SortFilter
-            options={sortOptions}
-            selectedOption={selectedSort}
-            onOptionChange={setSelectedSort}
-          />
-        </div>
-      </header>
+      <Header />
 
-      <div className="book-list">
-        {books.map((book) => (
-          <BookCard key={book.title} {...book} />
-        ))}
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <div className="book-count">
+                {/* ... (код вывода количества книг) */}
+              </div>
+              <div className="book-list">
+                {loading && <p>Loading...</p>}
+                {error && <p>Error: {error}</p>}
+                {books.map((book: any, index: number) => (
+                  <Link to={`/book/${book.id}`} key={book.id}>
+                    {' '}
+                    {/* <-- оберните BookCard в Link */}
+                    <BookCard
+                      title={book.volumeInfo.title}
+                      image={book.volumeInfo.imageLinks?.thumbnail || ''}
+                      category={book.volumeInfo.categories?.[0] || 'Unknown'}
+                      authors={book.volumeInfo.authors || []}
+                    />
+                  </Link>
+                ))}
+                {books.length > 0 && !loading && (
+                  <button onClick={handleLoadMore}>Load more</button>
+                )}
+              </div>
+            </>
+          }
+        />
+        <Route path="/book/:bookId" element={<BookDetails />} />{' '}
+        {/* <-- Route для детальной страницы книги */}
+      </Routes>
     </div>
   );
 }

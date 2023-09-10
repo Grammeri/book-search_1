@@ -1,38 +1,124 @@
-.App {
+.app {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.app-title {
+  width: 100%;
+  max-width: 400px;
+  font-size: 36px;
+  margin-bottom: 10px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #007acc;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.search-bar input {
+  width: 800px;
+  height: 100px;
+  padding: 10px 15px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+/* Category & Sort Filters' common styles */
+.category-filter,
+.sort-filter {
+  flex-basis: 49%;
+}
+
+.category-filter select,
+.sort-filter select {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+}
+
+/* BookCard Styles */
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.book-count {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.book-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.book-title {
+  font-size: 1.2em;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.book-authors {
+  font-size: 0.9em;
+  color: #777;
+  font-style: italic;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+.app {
+    padding: 10px;
   }
 }
+
+  .app-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+
+
