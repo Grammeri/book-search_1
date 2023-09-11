@@ -2,19 +2,28 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import BookCard from './components/BookCard/BookCard';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchBooks } from './redux/bookSlice';
-import { AppDispatch } from './redux/store';
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
 import { RootState } from './redux/store';
 import { Link, Route, Routes } from 'react-router-dom';
 import BookDetails from '../src/components/BookDetails/BookDetails';
 
-function App() {
-  const dispatch = useDispatch<AppDispatch>();
+type Book = {
+  id: string;
+  volumeInfo: {
+    title: string;
+    imageLinks?: { thumbnail: string };
+    categories?: string[];
+    authors?: string[];
+  };
+};
 
-  const books = useSelector((state: RootState) => state.books.books);
-  const loading = useSelector((state: RootState) => state.books.loading);
-  const error = useSelector((state: RootState) => state.books.error);
+function App() {
+  const dispatch = useAppDispatch();
+
+  const books = useAppSelector((state: RootState) => state.books.books);
+  const loading = useAppSelector((state: RootState) => state.books.loading);
+  const error = useAppSelector((state: RootState) => state.books.error);
 
   const [query, setQuery] = useState('');
   const [paginationCount, setPaginationCount] = useState(30);
@@ -24,7 +33,6 @@ function App() {
       dispatch(fetchBooks({ query, startIndex: 0 }) as any);
     }
   }, [query, dispatch]);
-
   const handleLoadMore = () => {
     setPaginationCount(paginationCount + 30);
     dispatch(fetchBooks({ query, startIndex: paginationCount }) as any);
@@ -44,11 +52,20 @@ function App() {
               </div>
               <div className="book-list">
                 {loading && <p>Loading...</p>}
-                {error && <p>Error: {error}</p>}
-                {books.map((book: any, index: number) => (
+                {error && (
+                  <div>
+                    <p>Error: {error}</p>
+                    <button
+                      onClick={() =>
+                        dispatch(fetchBooks({ query, startIndex: 0 }) as any)
+                      }
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
+                {books.map((book: Book, index: number) => (
                   <Link to={`/book/${book.id}`} key={book.id}>
-                    {' '}
-                    {/* <-- оберните BookCard в Link */}
                     <BookCard
                       title={book.volumeInfo.title}
                       image={book.volumeInfo.imageLinks?.thumbnail || ''}
@@ -64,8 +81,7 @@ function App() {
             </>
           }
         />
-        <Route path="/book/:bookId" element={<BookDetails />} />{' '}
-        {/* <-- Route для детальной страницы книги */}
+        <Route path="/book/:bookId" element={<BookDetails />} />
       </Routes>
     </div>
   );

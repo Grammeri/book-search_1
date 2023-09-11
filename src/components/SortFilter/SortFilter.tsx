@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../src/hooks/reduxHooks';
 import styles from './SortFilter.module.css';
 import { fetchBooks, setSelectedSort } from '../../../src/redux/bookSlice';
-import { AppDispatch, RootState } from '../../../src/redux/store';
+import { RootState } from '../../../src/redux/store';
 
 const SortFilter: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const currentQuery = useSelector((state: RootState) => state.books.query);
-  const selectedOption = useSelector(
+  const dispatch = useAppDispatch();
+  const currentQuery = useAppSelector((state: RootState) => state.books.query);
+  const selectedOption = useAppSelector(
     (state: RootState) => state.books.selectedSort,
   );
 

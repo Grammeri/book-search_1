@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './BookDetails.module.css';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../src/hooks/reduxHooks';
 import { RootState } from '../../../src/redux/store';
 //import { fetchBookDetails } from '../../../src/redux/bookSlice';
 
@@ -11,14 +11,16 @@ type Params = {
 
 const BookDetails: React.FC = () => {
   const { bookId } = useParams<Params>();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // Здесь предполагается, что у вас есть селекторы для получения деталей книги, статуса загрузки и возможных ошибок
-  const bookDetails = useSelector(
+  const bookDetails = useAppSelector(
     (state: RootState) => state.books.bookDetails,
   );
-  const loading = useSelector((state: RootState) => state.books.loadingDetails);
-  const error = useSelector((state: RootState) => state.books.errorDetails);
+  const loading = useAppSelector(
+    (state: RootState) => state.books.loadingDetails,
+  );
+  const error = useAppSelector((state: RootState) => state.books.errorDetails);
 
   /*  useEffect(() => {
 

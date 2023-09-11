@@ -103,12 +103,27 @@
   font-style: italic;
 }
 
+/* Button styles */
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
 /* Responsive styles for smaller screens */
 @media (max-width: 768px) {
-.app {
+  .app {
     padding: 10px;
   }
-}
 
   .app-title {
     font-size: 1.5em;
@@ -119,6 +134,4 @@
     width: 100%;
     margin: 10px 0;
   }
-
-
-
+}

@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import debounce from 'lodash.debounce';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../src/hooks/reduxHooks';
 
 import styles from './SearchBar.module.css';
 import { fetchBooks } from '../../../src/redux/bookSlice';
 import { AppDispatch } from '../../../src/redux/store';
 
 const SearchBar: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = useCallback(

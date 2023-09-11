@@ -4,21 +4,38 @@ const BASE_URL = 'https://www.googleapis.com/books/v1';
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
 
 export const searchBooks = async (
-  query: string,
+  query: {
+    startIndex?: number;
+    query: string;
+    orderBy?: string;
+    category?: string;
+  },
   orderBy: string = 'relevance',
-  maxResults?: string,
-  category?: number,
+  maxResults: number = 10,
+  category?: string,
+  startIndex: number = 0,
+  download?: 'epub',
+  filter?: 'partial' | 'full' | 'free-ebooks' | 'paid-ebooks' | 'ebooks',
+  langRestrict?: string,
+  printType?: 'all' | 'books' | 'magazines',
+  projection?: 'full' | 'lite',
 ) => {
-  const params = {
-    q: query,
+  const params: any = {
+    q: query.query,
     key: API_KEY,
     maxResults,
-    orderBy,
+    orderBy: query.orderBy || orderBy,
+    startIndex: query.startIndex || startIndex,
   };
 
-  if (category) {
-    params.q += `+subject:${category}`;
+  if (query.category && query.category !== 'all') {
+    params.q += `+subject:${query.category}`;
   }
+  if (download) params.download = download;
+  if (filter) params.filter = filter;
+  if (langRestrict) params.langRestrict = langRestrict;
+  if (printType) params.printType = printType;
+  if (projection) params.projection = projection;
 
   try {
     const response = await axios.get(`${BASE_URL}/volumes`, {
@@ -26,20 +43,6 @@ export const searchBooks = async (
     });
 
     return response.data.items || [];
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getBookDetails = async (bookId: string) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/volumes/${bookId}`, {
-      params: {
-        key: API_KEY,
-      },
-    });
-
-    return response.data;
   } catch (error) {
     throw error;
   }

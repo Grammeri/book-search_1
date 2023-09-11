@@ -33,7 +33,7 @@ export const fetchBooks = createAsyncThunk(
     {
       query,
       orderBy = 'relevance',
-      category,
+      category = 'all',
       startIndex = 0,
     }: {
       query: string;
@@ -44,13 +44,19 @@ export const fetchBooks = createAsyncThunk(
     thunkAPI,
   ) => {
     try {
-      const books = await searchBooks(query, orderBy, category, startIndex);
+      const books = await searchBooks({
+        query: query,
+        orderBy: orderBy,
+        category: category,
+        startIndex: startIndex,
+      });
       return books;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.message || 'Unknown error');
+        // Используем rejectWithValue, чтобы передать данные об ошибке
+        return thunkAPI.rejectWithValue(error.response.data);
       }
-      throw error;
+      return thunkAPI.rejectWithValue({ message: 'Unknown error' });
     }
   },
 );
@@ -93,8 +99,9 @@ export const booksSlice = createSlice({
       })
       .addCase(fetchBooks.rejected, (state, action: any) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload?.message || 'Unknown error';
       });
+
     /*      // обработчики для fetchBookDetails
       .addCase(fetchBookDetails.pending, (state) => {
         state.loading = true;

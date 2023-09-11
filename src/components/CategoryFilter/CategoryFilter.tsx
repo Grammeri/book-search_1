@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../src/hooks/reduxHooks';
 
 import styles from './CategoryFilter.module.css';
 import { fetchBooks, setSelectedCategory } from '../../../src/redux/bookSlice';
 import { AppDispatch, RootState } from '../../../src/redux/store';
 
 const CategoryFilter: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const categories = [
     'all',
     'art',
@@ -16,19 +16,23 @@ const CategoryFilter: React.FC = () => {
     'medical',
     'poetry',
   ];
-  const selectedCategory = useSelector(
+  const selectedCategory = useAppSelector(
     (state: RootState) => state.books.selectedCategory,
   );
+
+  const currentQuery = useAppSelector((state: RootState) => state.books.query);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const category = e.target.value;
     dispatch(setSelectedCategory(category));
-    dispatch(
-      fetchBooks({
-        query: 'someDefaultQuery',
-        category: category === 'all' ? undefined : category,
-      }),
-    );
+    if (currentQuery && currentQuery.trim() !== '') {
+      dispatch(
+        fetchBooks({
+          query: currentQuery,
+          category: category === 'all' ? undefined : category,
+        }),
+      );
+    }
   };
 
   return (
