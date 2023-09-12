@@ -8,14 +8,15 @@ import { AppDispatch, RootState } from '../../../src/redux/store';
 const CategoryFilter: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const categories = [
-    'all',
-    'art',
-    'biography',
-    'computers',
-    'history',
-    'medical',
-    'poetry',
+    'All',
+    'Art',
+    'Biography',
+    'Computers',
+    'History',
+    'Medical',
+    'Poetry',
   ];
+
   const selectedCategory = useAppSelector(
     (state: RootState) => state.books.selectedCategory,
   );
@@ -25,11 +26,12 @@ const CategoryFilter: React.FC = () => {
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const category = e.target.value;
     dispatch(setSelectedCategory(category));
+
     if (currentQuery && currentQuery.trim() !== '') {
       dispatch(
         fetchBooks({
           query: currentQuery,
-          category: category === 'all' ? undefined : category,
+          category: category !== 'All' ? category : undefined,
         }),
       );
     }

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import debounce from 'lodash.debounce';
 import { useAppDispatch } from '../../../src/hooks/reduxHooks';
 
@@ -10,17 +10,23 @@ const SearchBar: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = useCallback(
-    debounce((searchTerm: string) => {
-      dispatch(fetchBooks({ query: searchTerm }));
-    }, 300),
-    [dispatch],
-  );
+  const debouncedDispatch = debounce((searchTerm: string) => {
+    dispatch(fetchBooks({ query: searchTerm }));
+  }, 300);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    handleSearch(value);
+  };
+
+  const handleButtonClick = () => {
+    debouncedDispatch(searchTerm);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      debouncedDispatch(searchTerm);
+    }
   };
 
   return (
@@ -29,9 +35,13 @@ const SearchBar: React.FC = () => {
         type="text"
         value={searchTerm}
         onChange={handleChange}
+        onKeyDown={handleKeyPress}
         className={styles.searchInput}
         placeholder="Search for books..."
       />
+      <button onClick={handleButtonClick} className={styles.searchButton}>
+        Search
+      </button>
     </div>
   );
 };

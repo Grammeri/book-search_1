@@ -1,4 +1,8 @@
 .appHeader {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
     background-color: #007acc;
     color: #ffffff;
     padding: 20px;
@@ -28,6 +32,24 @@
 .filters h3 {
     font-size: 1.2em;
     margin-right: 10px;
+}
+.bottomData{
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    gap: 20px;
+    font-size: 1.2em;
+}
+.bookCount{
+    margin-right: 10px;
+}
+.loadMore{
+    margin-left: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+
 }
 
 @media (max-width: 768px) {

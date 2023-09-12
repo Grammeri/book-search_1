@@ -16,6 +16,10 @@
 }
 
 .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,6 +29,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .search-bar input {
   width: 800px;
@@ -45,7 +51,6 @@
   gap: 10px;
 }
 
-/* Category & Sort Filters' common styles */
 .category-filter,
 .sort-filter {
   flex-basis: 49%;
@@ -61,7 +66,6 @@
   border-radius: 4px;
 }
 
-/* BookCard Styles */
 .book-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -103,7 +107,6 @@
   font-style: italic;
 }
 
-/* Button styles */
 button {
   padding: 10px 20px;
   font-size: 1em;
@@ -119,7 +122,6 @@ button:hover {
   background-color: #005fa3;
 }
 
-/* Responsive styles for smaller screens */
 @media (max-width: 768px) {
   .app {
     padding: 10px;

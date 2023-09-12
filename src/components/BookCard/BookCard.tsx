@@ -1,12 +1,6 @@
 import React from 'react';
 import './BookCard.module.css';
-
-type BookCardProps = {
-  title: string;
-  image: string;
-  category: string;
-  authors: string[];
-};
+import { BookCardProps } from '../../../src/interfaces/interfaces';
 
 const BookCard: React.FC<BookCardProps> = ({
   title,

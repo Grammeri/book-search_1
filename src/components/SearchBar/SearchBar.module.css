@@ -1,14 +1,13 @@
 .searchBarContainer {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+   justify-content: center;
     gap: 10px;
     width: 100%;
 }
 
 .searchInput {
     width: 50%;
-    padding: 15px 40px 15px 10px; /* Добавлен правый отступ для иконки */
+    padding: 15px 40px 15px 10px;
     font-size: 1.2em;
     border: none;
     border-radius: 4px;
@@ -27,3 +26,29 @@
     }
 }
 
+.searchButton {
+    padding: 20px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: white;
+    color: #007acc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.searchButton:active {
+    background-color: #004499;
+}
+
+@media screen and (max-width: 768px) {
+    .searchButton {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+}
