@@ -26,8 +26,6 @@ const Header: React.FC = () => {
     }
   }, [query, dispatch]);
   const handleLoadMore = () => {
-    console.log('Attempting to load more...');
-    console.log('Current query: ', query);
     dispatch(
       fetchBooks({ query, startIndex: paginationCount, maxResults: 30 }) as any,
     );
